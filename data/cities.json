@@ -1,0 +1,11 @@
+{
+  "description": "List of the 5 biggest cities per Scandinavian country. Used in registration and profile forms for city selection.",
+  "consumed_by": ["components/auth/register-form.tsx", "components/profile/profile-form.tsx"],
+  "cities": {
+    "norway": ["Oslo", "Bergen", "Stavanger", "Trondheim", "Drammen"],
+    "sweden": ["Stockholm", "Gothenburg", "Malmö", "Uppsala", "Västerås"],
+    "denmark": ["Copenhagen", "Aarhus", "Odense", "Aalborg", "Frederiksberg"],
+    "finland": ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu"],
+    "iceland": ["Reykjavik", "Kópavogur", "Hafnarfjörður", "Akureyri", "Reykjanesbær"]
+  }
+}

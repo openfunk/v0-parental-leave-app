@@ -1,0 +1,115 @@
+{
+  "description": "Temperature-based clothing recommendations for babies. Includes layers, accessories, and tips based on weather conditions.",
+  "consumed_by": ["components/dashboard/clothing-recommendations.tsx"],
+  "temperatureRanges": {
+    "veryCold": {
+      "threshold": 0,
+      "operator": "<",
+      "label": "Very Cold (below 0°C)",
+      "layers": [
+        {
+          "label": "Base Layer",
+          "items": ["Thermal bodysuit", "Warm undershirt", "Thick tights or leggings"]
+        },
+        {
+          "label": "Mid Layer",
+          "items": ["Fleece or wool sweater", "Warm pants", "Thick socks"]
+        },
+        {
+          "label": "Outer Layer",
+          "items": ["Insulated winter suit or snowsuit", "Waterproof winter jacket"]
+        }
+      ],
+      "accessories": ["Warm hat covering ears", "Mittens or gloves", "Scarf or neck warmer", "Warm boots"],
+      "tips": [
+        "Use multiple thin layers rather than one thick layer",
+        "Check baby's neck to ensure they're not overheating"
+      ]
+    },
+    "cold": {
+      "threshold": [0, 10],
+      "operator": "between",
+      "label": "Cold (0-10°C)",
+      "layers": [
+        {
+          "label": "Base Layer",
+          "items": ["Long-sleeve bodysuit", "Comfortable undershirt"]
+        },
+        {
+          "label": "Mid Layer",
+          "items": ["Sweater or cardigan", "Pants", "Warm socks"]
+        },
+        {
+          "label": "Outer Layer",
+          "items": ["Jacket or coat", "Weather-appropriate footwear"]
+        }
+      ],
+      "accessories": ["Hat", "Light gloves if windy", "Comfortable shoes or boots"],
+      "tips": ["Layer up so you can adjust if baby gets too warm", "Bring an extra blanket for the stroller"]
+    },
+    "mild": {
+      "threshold": [10, 20],
+      "operator": "between",
+      "label": "Mild (10-20°C)",
+      "layers": [
+        {
+          "label": "Base Layer",
+          "items": ["Long-sleeve shirt or bodysuit", "Light pants or leggings"]
+        },
+        {
+          "label": "Outer Layer",
+          "items": ["Light jacket or cardigan", "Comfortable shoes"]
+        }
+      ],
+      "accessories": ["Sun hat if sunny", "Light socks"],
+      "tips": ["Perfect weather for outdoor activities", "Bring a light blanket just in case"]
+    },
+    "warm": {
+      "threshold": [20, 25],
+      "operator": "between",
+      "label": "Warm (20-25°C)",
+      "layers": [
+        {
+          "label": "Light Clothing",
+          "items": ["Short-sleeve shirt or bodysuit", "Light pants or shorts", "Sandals or light shoes"]
+        }
+      ],
+      "accessories": ["Sun hat", "Sunglasses", "Sunscreen (SPF 30+)"],
+      "tips": ["Keep baby hydrated", "Seek shade during peak sun hours (11am-3pm)"]
+    },
+    "hot": {
+      "threshold": 25,
+      "operator": ">=",
+      "label": "Hot (>25°C)",
+      "layers": [
+        {
+          "label": "Minimal Clothing",
+          "items": ["Light, breathable bodysuit", "Shorts or light dress", "Sandals"]
+        }
+      ],
+      "accessories": ["Wide-brimmed sun hat", "Sunglasses", "Sunscreen (SPF 50+)"],
+      "tips": [
+        "Dress baby in light, breathable fabrics like cotton",
+        "Keep baby in shade as much as possible",
+        "Offer water frequently"
+      ]
+    }
+  },
+  "weatherConditions": {
+    "rain": {
+      "conditionCodes": [1063, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, 1246],
+      "accessories": ["Rain cover for stroller", "Waterproof jacket or rain suit"],
+      "tips": ["Keep baby dry - wet clothes can cause rapid cooling"]
+    },
+    "snow": {
+      "conditionCodes": [1066, 1114, 1117, 1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258],
+      "accessories": ["Waterproof boots", "Extra mittens (they get wet quickly)"],
+      "tips": ["Limit outdoor time in heavy snow"]
+    },
+    "windy": {
+      "windSpeedThreshold": 20,
+      "accessories": ["Windproof outer layer"],
+      "tips": ["Wind chill can make it feel much colder - add an extra layer"]
+    }
+  }
+}

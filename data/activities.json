@@ -1,0 +1,171 @@
+{
+  "description": "Activity suggestions for parents with babies and toddlers. Includes age ranges, duration, type, and location information.",
+  "consumed_by": ["components/calendar/activity-suggestions-card.tsx", "components/dashboard/activity-suggestions.tsx"],
+  "activities": [
+    {
+      "title": "Tummy Time Play",
+      "description": "Strengthen baby's neck and shoulder muscles with supervised floor time",
+      "ageRange": ["0-6m", "6-12m"],
+      "duration": "short",
+      "type": "physical",
+      "location": "indoor"
+    },
+    {
+      "title": "Nature Walk in Stroller",
+      "description": "Fresh air and nature exposure in local parks or forests",
+      "ageRange": ["0-6m", "6-12m", "12-24m", "2y+"],
+      "duration": "medium",
+      "type": "outdoor",
+      "location": "outdoor"
+    },
+    {
+      "title": "Baby Swimming",
+      "description": "Water familiarization and bonding at local swimming pool",
+      "ageRange": ["6-12m", "12-24m", "2y+"],
+      "duration": "medium",
+      "type": "physical",
+      "location": "indoor"
+    },
+    {
+      "title": "Sensory Play with Textures",
+      "description": "Explore different fabrics, materials, and safe household items",
+      "ageRange": ["6-12m", "12-24m"],
+      "duration": "short",
+      "type": "creative",
+      "location": "indoor"
+    },
+    {
+      "title": "Music and Movement",
+      "description": "Sing songs, play instruments, and dance together",
+      "ageRange": ["0-6m", "6-12m", "12-24m", "2y+"],
+      "duration": "short",
+      "type": "creative",
+      "location": "indoor"
+    },
+    {
+      "title": "Library Story Time",
+      "description": "Join local library's baby story time sessions",
+      "ageRange": ["6-12m", "12-24m", "2y+"],
+      "duration": "short",
+      "type": "educational",
+      "location": "indoor"
+    },
+    {
+      "title": "Playground Visit",
+      "description": "Explore swings, slides, and sandbox at local playground",
+      "ageRange": ["12-24m", "2y+"],
+      "duration": "medium",
+      "type": "physical",
+      "location": "outdoor"
+    },
+    {
+      "title": "Baby Café Meetup",
+      "description": "Socialize with other parents at family-friendly cafés",
+      "ageRange": ["0-6m", "6-12m", "12-24m", "2y+"],
+      "duration": "medium",
+      "type": "social",
+      "location": "indoor"
+    },
+    {
+      "title": "Indoor Play Center",
+      "description": "Visit soft play areas designed for babies and toddlers",
+      "ageRange": ["6-12m", "12-24m", "2y+"],
+      "duration": "long",
+      "type": "physical",
+      "location": "indoor"
+    },
+    {
+      "title": "Baby Massage",
+      "description": "Gentle massage to promote bonding and relaxation",
+      "ageRange": ["0-6m", "6-12m"],
+      "duration": "short",
+      "type": "physical",
+      "location": "indoor"
+    },
+    {
+      "title": "Outdoor Picnic",
+      "description": "Enjoy lunch outdoors with blanket and simple foods",
+      "ageRange": ["6-12m", "12-24m", "2y+"],
+      "duration": "medium",
+      "type": "outdoor",
+      "location": "outdoor"
+    },
+    {
+      "title": "Art with Baby-Safe Materials",
+      "description": "Finger painting, water play, or edible paint activities",
+      "ageRange": ["12-24m", "2y+"],
+      "duration": "short",
+      "type": "creative",
+      "location": "indoor"
+    },
+    {
+      "title": "Visit Children's Museum",
+      "description": "Interactive exhibits designed for young children",
+      "ageRange": ["12-24m", "2y+"],
+      "duration": "long",
+      "type": "educational",
+      "location": "indoor"
+    },
+    {
+      "title": "Baby Yoga Class",
+      "description": "Gentle stretches and movements for parent and baby",
+      "ageRange": ["0-6m", "6-12m", "12-24m"],
+      "duration": "medium",
+      "type": "physical",
+      "location": "indoor"
+    },
+    {
+      "title": "Forest Bathing (Skogsbad)",
+      "description": "Mindful time in nature, traditional Scandinavian practice",
+      "ageRange": ["0-6m", "6-12m", "12-24m", "2y+"],
+      "duration": "long",
+      "type": "outdoor",
+      "location": "outdoor"
+    },
+    {
+      "title": "Building Blocks Play",
+      "description": "Stack, knock down, and explore with soft or wooden blocks",
+      "ageRange": ["6-12m", "12-24m", "2y+"],
+      "duration": "short",
+      "type": "educational",
+      "location": "indoor"
+    },
+    {
+      "title": "Parent-Baby Swimming",
+      "description": "Structured swimming lessons for babies and parents",
+      "ageRange": ["6-12m", "12-24m"],
+      "duration": "medium",
+      "type": "physical",
+      "location": "indoor"
+    },
+    {
+      "title": "Petting Zoo Visit",
+      "description": "Meet and interact with gentle farm animals",
+      "ageRange": ["12-24m", "2y+"],
+      "duration": "medium",
+      "type": "educational",
+      "location": "outdoor"
+    }
+  ],
+  "labels": {
+    "ageRange": {
+      "0-6m": "0-6 months",
+      "6-12m": "6-12 months",
+      "12-24m": "12-24 months",
+      "2y+": "2+ years"
+    },
+    "type": {
+      "physical": "Physical",
+      "creative": "Creative",
+      "educational": "Educational",
+      "social": "Social",
+      "outdoor": "Outdoor",
+      "indoor": "Indoor"
+    },
+    "duration": {
+      "short": "< 30 min",
+      "medium": "30-60 min",
+      "long": "1+ hours"
+    }
+  }
+}
