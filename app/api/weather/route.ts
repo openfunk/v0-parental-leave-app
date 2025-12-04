@@ -1,5 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
+import { isDevelopmentBypass, MOCK_USER } from "@/config/development"
 
 const WEATHER_API_KEY = "7f04a115fb5246b1bf2145558250110"
 const WEATHER_API_BASE_URL = "https://api.weatherapi.com/v1"
@@ -8,36 +9,51 @@ export async function GET(request: Request) {
   try {
     console.log("[v0] Weather API: Starting request")
 
-    // Get the user's location from the database
-    const supabase = await createServerClient()
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser()
+    let userId: string
+    let userDetails: { city: string; country: string } | null = null
 
-    if (authError || !user) {
-      console.log("[v0] Weather API: No authenticated user")
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    if (isDevelopmentBypass()) {
+      console.log("[v0] Weather API: Using bypass mode with mock user")
+      userId = MOCK_USER.id
+      userDetails = {
+        city: MOCK_USER.user_details.city,
+        country: MOCK_USER.user_details.country,
+      }
+    } else {
+      // Get the user's location from the database
+      const supabase = await createServerClient()
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser()
+
+      if (authError || !user) {
+        console.log("[v0] Weather API: No authenticated user")
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      }
+
+      console.log("[v0] Weather API: User authenticated:", user.id)
+      userId = user.id
+
+      // Fetch user details to get city and country
+      const { data: details, error: detailsError } = await supabase
+        .from("user_details")
+        .select("city, country")
+        .eq("user_id", user.id)
+        .single()
+
+      if (detailsError || !details) {
+        console.log("[v0] Weather API: No user details found")
+        return NextResponse.json(
+          { error: "User location not found. Please update your profile with your city and country." },
+          { status: 404 },
+        )
+      }
+
+      userDetails = details
     }
 
-    console.log("[v0] Weather API: User authenticated:", user.id)
-
-    // Fetch user details to get city and country
-    const { data: userDetails, error: detailsError } = await supabase
-      .from("user_details")
-      .select("city, country")
-      .eq("user_id", user.id)
-      .single()
-
-    if (detailsError || !userDetails) {
-      console.log("[v0] Weather API: No user details found")
-      return NextResponse.json(
-        { error: "User location not found. Please update your profile with your city and country." },
-        { status: 404 },
-      )
-    }
-
-    if (!userDetails.city || userDetails.city.trim() === "") {
+    if (!userDetails || !userDetails.city || userDetails.city.trim() === "") {
       console.log("[v0] Weather API: City is empty")
       return NextResponse.json(
         { error: "Please add your city in your profile to see weather information." },
@@ -61,7 +77,6 @@ export async function GET(request: Request) {
     const data = await forecastResponse.json()
 
     console.log("[v0] Weather API: Successfully fetched weather data")
-    console.log("[v0] Weather API: Response structure:", JSON.stringify(data).substring(0, 200))
 
     return NextResponse.json({
       current: {

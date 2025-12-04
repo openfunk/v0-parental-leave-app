@@ -1,7 +1,13 @@
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
+import { isDevelopmentBypass, createMockSupabaseClient } from "@/config/development"
 
 export async function createClient() {
+  if (isDevelopmentBypass()) {
+    console.log("[v0] Server: Using mock Supabase client (bypass enabled)")
+    return createMockSupabaseClient() as any
+  }
+
   const cookieStore = await cookies()
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL

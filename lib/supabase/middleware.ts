@@ -1,7 +1,15 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
+import { isDevelopmentBypass } from "@/config/development"
 
 export async function updateSession(request: NextRequest) {
+  if (isDevelopmentBypass()) {
+    console.log("[v0] Auth bypass active - skipping authentication in middleware")
+    return NextResponse.next({
+      request,
+    })
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })

@@ -1,6 +1,12 @@
-import { createBrowserClient } from "@supabase/ssr"
+import { createBrowserClient as createSupabaseBrowserClient } from "@supabase/ssr"
+import { isDevelopmentBypass, createMockSupabaseClient } from "@/config/development"
 
 export function createClient() {
+  if (isDevelopmentBypass()) {
+    console.log("[v0] Browser: Using mock Supabase client (bypass enabled)")
+    return createMockSupabaseClient() as any
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -13,7 +19,7 @@ export function createClient() {
   }
 
   console.log("[v0] Creating Supabase browser client")
-  return createBrowserClient(supabaseUrl, supabaseAnonKey)
+  return createSupabaseBrowserClient(supabaseUrl, supabaseAnonKey)
 }
 
 export { createClient as createBrowserClient }
