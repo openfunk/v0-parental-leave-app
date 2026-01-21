@@ -262,6 +262,44 @@ export const createMockSupabaseClient = () => {
           error: null,
         }
       },
+      signUp: async (credentials: { email: string; password: string; options?: any }) => {
+        console.log("[v0] Mock auth.signUp() called with:", credentials.email)
+        const newUser = {
+          id: `mock-new-user-${Date.now()}`,
+          email: credentials.email,
+          user_metadata: credentials.options?.data || {},
+          created_at: new Date().toISOString(),
+        }
+        return {
+          data: {
+            user: newUser,
+            session: {
+              user: newUser,
+              access_token: "mock-token",
+              refresh_token: "mock-refresh-token",
+            },
+          },
+          error: null,
+        }
+      },
+      signInWithPassword: async (credentials: { email: string; password: string }) => {
+        console.log("[v0] Mock auth.signInWithPassword() called with:", credentials.email)
+        return {
+          data: {
+            user: MOCK_USER,
+            session: {
+              user: MOCK_USER,
+              access_token: "mock-token",
+              refresh_token: "mock-refresh-token",
+            },
+          },
+          error: null,
+        }
+      },
+      resetPasswordForEmail: async (email: string, options?: any) => {
+        console.log("[v0] Mock auth.resetPasswordForEmail() called for:", email)
+        return { data: {}, error: null }
+      },
       signOut: async () => {
         console.log("[v0] Mock auth.signOut() called")
         return { error: null }
