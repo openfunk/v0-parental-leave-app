@@ -1,15 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
-import { isDevelopmentBypass } from "@/config/development"
 
 export async function updateSession(request: NextRequest) {
-  if (isDevelopmentBypass()) {
-    console.log("[v0] Auth bypass active - skipping authentication in middleware")
-    return NextResponse.next({
-      request,
-    })
-  }
-
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -18,7 +10,6 @@ export async function updateSession(request: NextRequest) {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error("[v0] Missing Supabase environment variables in middleware")
     return supabaseResponse
   }
 
@@ -40,12 +31,7 @@ export async function updateSession(request: NextRequest) {
 
     const {
       data: { user },
-      error,
     } = await supabase.auth.getUser()
-
-    if (error && error.message !== "Auth session missing!") {
-      console.error("[v0] Error getting user in middleware:", error.message)
-    }
 
     const isPublicPath =
       request.nextUrl.pathname.startsWith("/login") ||
@@ -68,8 +54,7 @@ export async function updateSession(request: NextRequest) {
     }
 
     return supabaseResponse
-  } catch (error) {
-    console.error("[v0] Middleware error:", error instanceof Error ? error.message : "Unknown error")
+  } catch {
     return supabaseResponse
   }
 }
