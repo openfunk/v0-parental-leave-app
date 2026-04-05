@@ -69,7 +69,6 @@ export function WeatherCard() {
   useEffect(() => {
     async function fetchWeather() {
       try {
-        console.log("[v0] WeatherCard: Fetching weather data")
         setLoading(true)
         setError(null)
 
@@ -81,7 +80,6 @@ export function WeatherCard() {
         }
 
         const data = await response.json()
-        console.log("[v0] WeatherCard: Weather data received:", JSON.stringify(data).substring(0, 300))
 
         if (!data.forecast || !data.forecast.forecastday || data.forecast.forecastday.length < 2) {
           throw new Error("Invalid weather data structure")
@@ -89,7 +87,6 @@ export function WeatherCard() {
 
         setWeatherData(data)
       } catch (err) {
-        console.error("[v0] WeatherCard: Error fetching weather:", err)
         setError(err instanceof Error ? err.message : "Failed to load weather")
       } finally {
         setLoading(false)

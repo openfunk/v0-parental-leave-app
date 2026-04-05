@@ -17,13 +17,6 @@ export default async function ProfilePage() {
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
-  console.log("[v0] Profile page - User data:", {
-    userId: user.id,
-    email: user.email,
-    userDetails,
-    profile,
-  })
-
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <div className="mb-6">
@@ -35,8 +28,8 @@ export default async function ProfilePage() {
         user={{
           id: user.id,
           email: user.email || "",
-          firstName: userDetails?.first_name || "",
-          lastName: userDetails?.last_name || "",
+          firstName: profile?.first_name || "",
+          lastName: profile?.last_name || "",
           city: userDetails?.city || "",
           country: userDetails?.country || "",
           phone: userDetails?.phone || "",

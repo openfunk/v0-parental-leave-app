@@ -1,82 +1,49 @@
-import { createServerClient } from "@/lib/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
-import { isDevelopmentBypass, MOCK_USER } from "@/config/development"
 
 const WEATHER_API_KEY = "7f04a115fb5246b1bf2145558250110"
 const WEATHER_API_BASE_URL = "https://api.weatherapi.com/v1"
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    console.log("[v0] Weather API: Starting request")
+    const supabase = await createClient()
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
 
-    let userId: string
-    let userDetails: { city: string; country: string } | null = null
-
-    if (isDevelopmentBypass()) {
-      console.log("[v0] Weather API: Using bypass mode with mock user")
-      userId = MOCK_USER.id
-      userDetails = {
-        city: MOCK_USER.user_details.city,
-        country: MOCK_USER.user_details.country,
-      }
-    } else {
-      // Get the user's location from the database
-      const supabase = await createServerClient()
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser()
-
-      if (authError || !user) {
-        console.log("[v0] Weather API: No authenticated user")
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-      }
-
-      console.log("[v0] Weather API: User authenticated:", user.id)
-      userId = user.id
-
-      // Fetch user details to get city and country
-      const { data: details, error: detailsError } = await supabase
-        .from("user_details")
-        .select("city, country")
-        .eq("user_id", user.id)
-        .single()
-
-      if (detailsError || !details) {
-        console.log("[v0] Weather API: No user details found")
-        return NextResponse.json(
-          { error: "User location not found. Please update your profile with your city and country." },
-          { status: 404 },
-        )
-      }
-
-      userDetails = details
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    if (!userDetails || !userDetails.city || userDetails.city.trim() === "") {
-      console.log("[v0] Weather API: City is empty")
+    const { data: userDetails, error: detailsError } = await supabase
+      .from("user_details")
+      .select("city, country")
+      .eq("user_id", user.id)
+      .single()
+
+    if (detailsError || !userDetails) {
+      return NextResponse.json(
+        { error: "User location not found. Please update your profile with your city and country." },
+        { status: 404 },
+      )
+    }
+
+    if (!userDetails.city || userDetails.city.trim() === "") {
       return NextResponse.json(
         { error: "Please add your city in your profile to see weather information." },
         { status: 400 },
       )
     }
 
-    console.log("[v0] Weather API: User location:", userDetails.city, userDetails.country)
-
     const location = `${userDetails.city}, ${userDetails.country}`
-
     const forecastUrl = `${WEATHER_API_BASE_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(location)}&days=2&aqi=no&alerts=no`
-    console.log("[v0] Weather API: Fetching weather for:", location)
 
     const forecastResponse = await fetch(forecastUrl)
     if (!forecastResponse.ok) {
-      const errorText = await forecastResponse.text()
-      console.log("[v0] Weather API: Forecast fetch failed:", forecastResponse.status, errorText)
       throw new Error("Failed to fetch weather data")
     }
     const data = await forecastResponse.json()
-
-    console.log("[v0] Weather API: Successfully fetched weather data")
 
     return NextResponse.json({
       current: {
@@ -96,8 +63,7 @@ export async function GET(request: Request) {
         country: data.location.country,
       },
     })
-  } catch (error) {
-    console.error("[v0] Weather API: Error:", error)
+  } catch {
     return NextResponse.json(
       { error: "Failed to fetch weather data. Please check your location settings." },
       { status: 500 },

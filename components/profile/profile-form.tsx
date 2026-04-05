@@ -44,10 +44,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     phone: user.phone || "",
   })
 
-  console.log("[v0] ProfileForm initialized with user data:", user)
-
   const handleLogout = async () => {
-    console.log("[v0] Logging out user")
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push("/")
@@ -55,7 +52,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
   }
 
   const handleCancel = () => {
-    console.log("[v0] Canceling edit mode")
     setFormData({
       firstName: user.firstName,
       lastName: user.lastName,
@@ -74,8 +70,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
     setError(null)
     setSuccess(false)
 
-    console.log("[v0] Submitting profile update:", formData)
-
     try {
       // Validate required fields
       if (!formData.firstName || !formData.lastName) {
@@ -88,12 +82,23 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       const supabase = createClient()
 
-      // Update user_details table
-      const { error: updateError } = await supabase
-        .from("user_details")
+      // Update profiles table for first_name and last_name
+      const { error: profileError } = await supabase
+        .from("profiles")
         .update({
           first_name: formData.firstName,
           last_name: formData.lastName,
+        })
+        .eq("id", user.id)
+
+      if (profileError) {
+        throw new Error(`Failed to update profile: ${profileError.message}`)
+      }
+
+      // Update user_details table for city, country, and phone
+      const { error: updateError } = await supabase
+        .from("user_details")
+        .update({
           city: formData.city,
           country: formData.country,
           phone: formData.phone,
@@ -101,24 +106,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
         .eq("user_id", user.id)
 
       if (updateError) {
-        console.error("[v0] Error updating user details:", updateError)
-        throw new Error(`Failed to update profile: ${updateError.message}`)
+        throw new Error(`Failed to update user details: ${updateError.message}`)
       }
 
-      // Update profiles table with display name
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({
-          display_name: `${formData.firstName} ${formData.lastName}`,
-        })
-        .eq("id", user.id)
-
-      if (profileError) {
-        console.error("[v0] Error updating profile:", profileError)
-        // Don't throw error here, as user_details is more important
-      }
-
-      console.log("[v0] Profile updated successfully")
       setSuccess(true)
       setIsEditing(false)
 
@@ -127,7 +117,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         router.refresh()
       }, 1500)
     } catch (err) {
-      console.error("[v0] Profile update failed:", err)
       setError(err instanceof Error ? err.message : "Failed to update profile")
     } finally {
       setIsLoading(false)
