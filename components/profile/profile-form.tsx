@@ -82,12 +82,23 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       const supabase = createClient()
 
-      // Update user_details table
-      const { error: updateError } = await supabase
-        .from("user_details")
+      // Update profiles table for first_name and last_name
+      const { error: profileError } = await supabase
+        .from("profiles")
         .update({
           first_name: formData.firstName,
           last_name: formData.lastName,
+        })
+        .eq("id", user.id)
+
+      if (profileError) {
+        throw new Error(`Failed to update profile: ${profileError.message}`)
+      }
+
+      // Update user_details table for city, country, and phone
+      const { error: updateError } = await supabase
+        .from("user_details")
+        .update({
           city: formData.city,
           country: formData.country,
           phone: formData.phone,
@@ -95,19 +106,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         .eq("user_id", user.id)
 
       if (updateError) {
-        throw new Error(`Failed to update profile: ${updateError.message}`)
-      }
-
-      // Update profiles table with display name
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({
-          display_name: `${formData.firstName} ${formData.lastName}`,
-        })
-        .eq("id", user.id)
-
-      if (profileError) {
-        // Don't throw error here, as user_details is more important
+        throw new Error(`Failed to update user details: ${updateError.message}`)
       }
 
       setSuccess(true)

@@ -119,10 +119,20 @@ export function RegisterForm() {
 
       const userId = data.user.id
 
-      const { error: userDetailsError } = await supabase.from("user_details").insert({
-        user_id: userId,
+      // Insert into profiles table for first_name and last_name
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: userId,
         first_name: firstName,
         last_name: lastName,
+      })
+
+      if (profileError) {
+        throw new Error(`Failed to save profile: ${profileError.message}`)
+      }
+
+      // Insert into user_details table for city and country
+      const { error: userDetailsError } = await supabase.from("user_details").insert({
+        user_id: userId,
         country: country,
         city: city,
       })
