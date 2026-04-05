@@ -53,8 +53,6 @@ export function RegisterForm() {
     setError(null)
     setUserExists(false)
 
-    console.log("[v0] Registration form submitted")
-
     const formData = new FormData(event.currentTarget)
     const firstName = formData.get("firstName") as string
     const lastName = formData.get("lastName") as string
@@ -64,21 +62,9 @@ export function RegisterForm() {
     const leaveStartDate = formData.get("leaveStartDate") as string
     const leaveEndDate = formData.get("leaveEndDate") as string
 
-    console.log("[v0] Form data:", {
-      firstName,
-      lastName,
-      email,
-      country,
-      city,
-      leaveStartDate,
-      leaveEndDate,
-      childrenCount: children.length,
-    })
-
     if (password !== confirmPassword) {
       setError("Passwords do not match")
       setIsLoading(false)
-      console.log("[v0] Password validation failed")
       return
     }
 
@@ -86,27 +72,23 @@ export function RegisterForm() {
     if (validChildren.length === 0) {
       setError("Please add at least one child with name and birthdate")
       setIsLoading(false)
-      console.log("[v0] Child validation failed")
       return
     }
 
     if (!leaveStartDate || !leaveEndDate) {
       setError("Please provide parental leave start and end dates")
       setIsLoading(false)
-      console.log("[v0] Parental leave dates validation failed")
       return
     }
 
     if (new Date(leaveStartDate) > new Date(leaveEndDate)) {
       setError("Leave start date must be before end date")
       setIsLoading(false)
-      console.log("[v0] Parental leave dates order validation failed")
       return
     }
 
     try {
       const supabase = createClient()
-      console.log("[v0] Creating Supabase client")
 
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -119,15 +101,12 @@ export function RegisterForm() {
         },
       })
 
-      console.log("[v0] Sign up response:", { userId: data.user?.id, hasSession: !!data.session, error: signUpError })
-
       if (signUpError) {
         if (
           signUpError.message.toLowerCase().includes("already registered") ||
           signUpError.message.toLowerCase().includes("already exists") ||
           signUpError.message.toLowerCase().includes("user already registered")
         ) {
-          console.log("[v0] User already exists")
           setUserExists(true)
           return
         }
@@ -139,7 +118,6 @@ export function RegisterForm() {
       }
 
       const userId = data.user.id
-      console.log("[v0] User created successfully:", userId)
 
       const { error: userDetailsError } = await supabase.from("user_details").insert({
         user_id: userId,
@@ -150,10 +128,8 @@ export function RegisterForm() {
       })
 
       if (userDetailsError) {
-        console.error("[v0] Error inserting user details:", userDetailsError)
         throw new Error(`Failed to save user details: ${userDetailsError.message}`)
       }
-      console.log("[v0] User details inserted successfully")
 
       const childrenToInsert = validChildren.map((child) => ({
         user_id: userId,
@@ -167,10 +143,8 @@ export function RegisterForm() {
         .select()
 
       if (childrenError) {
-        console.error("[v0] Error inserting children:", childrenError)
         throw new Error(`Failed to save children: ${childrenError.message}`)
       }
-      console.log("[v0] Children inserted successfully:", insertedChildren?.length)
 
       if (insertedChildren && insertedChildren.length > 0) {
         const parentalLeaveToInsert = insertedChildren.map((child) => ({
@@ -184,22 +158,17 @@ export function RegisterForm() {
         const { error: leaveError } = await supabase.from("parental_leave").insert(parentalLeaveToInsert)
 
         if (leaveError) {
-          console.error("[v0] Error inserting parental leave:", leaveError)
           throw new Error(`Failed to save parental leave: ${leaveError.message}`)
         }
-        console.log("[v0] Parental leave inserted successfully")
       }
 
       if (data.user && !data.session) {
-        console.log("[v0] Email confirmation required")
         setNeedsEmailConfirmation(true)
       } else if (data.session) {
-        console.log("[v0] User logged in, redirecting to dashboard")
         router.push("/dashboard")
         router.refresh()
       }
     } catch (err) {
-      console.error("[v0] Registration failed:", err)
       setError(err instanceof Error ? err.message : "An error occurred during registration")
     } finally {
       setIsLoading(false)

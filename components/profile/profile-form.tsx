@@ -44,10 +44,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     phone: user.phone || "",
   })
 
-  console.log("[v0] ProfileForm initialized with user data:", user)
-
   const handleLogout = async () => {
-    console.log("[v0] Logging out user")
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push("/")
@@ -55,7 +52,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
   }
 
   const handleCancel = () => {
-    console.log("[v0] Canceling edit mode")
     setFormData({
       firstName: user.firstName,
       lastName: user.lastName,
@@ -73,8 +69,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
     setIsLoading(true)
     setError(null)
     setSuccess(false)
-
-    console.log("[v0] Submitting profile update:", formData)
 
     try {
       // Validate required fields
@@ -101,7 +95,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         .eq("user_id", user.id)
 
       if (updateError) {
-        console.error("[v0] Error updating user details:", updateError)
         throw new Error(`Failed to update profile: ${updateError.message}`)
       }
 
@@ -114,11 +107,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
         .eq("id", user.id)
 
       if (profileError) {
-        console.error("[v0] Error updating profile:", profileError)
         // Don't throw error here, as user_details is more important
       }
 
-      console.log("[v0] Profile updated successfully")
       setSuccess(true)
       setIsEditing(false)
 
@@ -127,7 +118,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         router.refresh()
       }, 1500)
     } catch (err) {
-      console.error("[v0] Profile update failed:", err)
       setError(err instanceof Error ? err.message : "Failed to update profile")
     } finally {
       setIsLoading(false)

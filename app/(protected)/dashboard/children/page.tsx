@@ -12,7 +12,6 @@ export default function ChildrenPage() {
   const { children, isLoading, fetchChildren } = useChildrenStore()
 
   useEffect(() => {
-    console.log("[v0] ChildrenPage: Fetching children on mount")
     fetchChildren()
   }, [fetchChildren])
 
