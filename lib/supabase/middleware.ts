@@ -39,7 +39,9 @@ export async function updateSession(request: NextRequest) {
       request.nextUrl.pathname.startsWith("/forgot-password") ||
       request.nextUrl.pathname.startsWith("/reset-password") ||
       request.nextUrl.pathname.startsWith("/auth") ||
-      request.nextUrl.pathname === "/"
+      request.nextUrl.pathname === "/" ||
+      // DEV ONLY: Allow access to ready-to-go page without login
+      request.nextUrl.pathname.startsWith("/dashboard/ready-to-go")
 
     if (user && (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/register"))) {
       const url = request.nextUrl.clone()
