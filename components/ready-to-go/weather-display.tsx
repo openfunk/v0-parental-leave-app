@@ -49,7 +49,7 @@ export function WeatherDisplay({ onWeatherLoaded }: WeatherDisplayProps) {
         setLoading(true)
         setError(null)
 
-        const response = await fetch("/api/weather")
+        const response = await fetch("/api/weather/public")
 
         if (!response.ok) {
           const errorData = await response.json()
