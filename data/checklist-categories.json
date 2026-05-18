@@ -1,0 +1,48 @@
+{
+  "description": "Fixed checklist categories for parents leaving the house with their child.",
+  "consumed_by": ["components/ready-to-go/checklist-category.tsx", "app/(protected)/dashboard/ready-to-go/page.tsx"],
+  "categories": [
+    {
+      "id": "essentials",
+      "title": "Essentials",
+      "items": [
+        { "id": "diaper-bag", "label": "Diaper bag" },
+        { "id": "keys", "label": "Keys" },
+        { "id": "phone", "label": "Phone" },
+        { "id": "wallet", "label": "Wallet" },
+        { "id": "stroller", "label": "Stroller / Carrier" }
+      ]
+    },
+    {
+      "id": "feeding",
+      "title": "Feeding",
+      "items": [
+        { "id": "bottles", "label": "Bottles / Formula" },
+        { "id": "snacks", "label": "Snacks" },
+        { "id": "water", "label": "Water bottle" },
+        { "id": "bib", "label": "Bib" }
+      ]
+    },
+    {
+      "id": "diapering",
+      "title": "Diapering",
+      "items": [
+        { "id": "diapers", "label": "Diapers" },
+        { "id": "wipes", "label": "Wipes" },
+        { "id": "changing-pad", "label": "Changing pad" },
+        { "id": "diaper-cream", "label": "Diaper cream" },
+        { "id": "extra-clothes", "label": "Extra clothes" }
+      ]
+    },
+    {
+      "id": "comfort",
+      "title": "Comfort",
+      "items": [
+        { "id": "pacifier", "label": "Pacifier" },
+        { "id": "favorite-toy", "label": "Favorite toy" },
+        { "id": "blanket", "label": "Blanket" },
+        { "id": "lovey", "label": "Lovey / Comfort item" }
+      ]
+    }
+  ]
+}

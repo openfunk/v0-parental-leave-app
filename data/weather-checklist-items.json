@@ -1,0 +1,108 @@
+{
+  "description": "Weather-based checklist items that appear dynamically based on current weather conditions.",
+  "consumed_by": ["lib/checklist-utils.ts", "app/(protected)/dashboard/ready-to-go/page.tsx"],
+  "weatherItems": [
+    {
+      "id": "sunscreen",
+      "label": "Sunscreen",
+      "conditions": {
+        "minTemp": 20,
+        "codes": [1000, 1003]
+      }
+    },
+    {
+      "id": "sunhat",
+      "label": "Sun hat",
+      "conditions": {
+        "minTemp": 20,
+        "codes": [1000, 1003]
+      }
+    },
+    {
+      "id": "sunglasses",
+      "label": "Sunglasses",
+      "conditions": {
+        "minTemp": 20,
+        "codes": [1000, 1003]
+      }
+    },
+    {
+      "id": "extra-water",
+      "label": "Extra water",
+      "conditions": {
+        "minTemp": 25
+      }
+    },
+    {
+      "id": "umbrella",
+      "label": "Umbrella",
+      "conditions": {
+        "codes": [1063, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, 1246]
+      }
+    },
+    {
+      "id": "rain-cover",
+      "label": "Stroller rain cover",
+      "conditions": {
+        "codes": [1063, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, 1246]
+      }
+    },
+    {
+      "id": "rain-jacket",
+      "label": "Rain jacket",
+      "conditions": {
+        "codes": [1063, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, 1246]
+      }
+    },
+    {
+      "id": "warm-blanket",
+      "label": "Warm blanket",
+      "conditions": {
+        "maxTemp": 15
+      }
+    },
+    {
+      "id": "warm-hat",
+      "label": "Warm hat",
+      "conditions": {
+        "maxTemp": 10
+      }
+    },
+    {
+      "id": "mittens",
+      "label": "Mittens",
+      "conditions": {
+        "maxTemp": 5
+      }
+    },
+    {
+      "id": "extra-layers",
+      "label": "Extra warm layers",
+      "conditions": {
+        "maxTemp": 10
+      }
+    },
+    {
+      "id": "snow-suit",
+      "label": "Snow suit",
+      "conditions": {
+        "codes": [1066, 1114, 1117, 1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258]
+      }
+    },
+    {
+      "id": "windproof-layer",
+      "label": "Windproof layer",
+      "conditions": {
+        "minWind": 20
+      }
+    },
+    {
+      "id": "light-jacket",
+      "label": "Light jacket",
+      "conditions": {
+        "minTemp": 15,
+        "maxTemp": 20
+      }
+    }
+  ]
+}
