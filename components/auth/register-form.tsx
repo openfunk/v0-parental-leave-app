@@ -119,8 +119,11 @@ export function RegisterForm() {
 
       const userId = data.user.id
 
-      // Insert into profiles table for first_name and last_name
-      const { error: profileError } = await supabase.from("profiles").insert({
+      // Upsert into profiles table for first_name and last_name. A DB trigger
+      // (see scripts/005_create_profile_trigger.sql) already creates the row
+      // on signup, so this must not be a plain insert or it'll hit a
+      // duplicate-key error.
+      const { error: profileError } = await supabase.from("profiles").upsert({
         id: userId,
         first_name: firstName,
         last_name: lastName,
